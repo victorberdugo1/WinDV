@@ -1,0 +1,86 @@
+static bool GetSSYBPack(BYTE *buf, int len, BYTE packNum, BYTE pack[5])
+{
+    int i, j, k;
+    int nDIF = (len == 144000) ? 12 : 10;
+    // Only the first DIF sequence contains the timecode packs
+    for (i = 0; i < 1; i++) {
+        for (j = 0; j < 2; j++) { // j=0: second block (index 1), j=1: third block (index 2)
+            BYTE *block = buf + i * 150 * 80 + (1+j) * 80;
+            // Skip the 3-byte header
+            BYTE *packs = block + 3;
+            // Each pack is 5 bytes, 15 packs per block
+            for (k = 0; k < 15; k++) {
+                BYTE *s = packs + k * 5;
+                if (s[0] == packNum) {
+                    pack[0] = s[0];
+                    pack[1] = s[1];
+                    pack[2] = s[2];
+                    pack[3] = s[3];
+                    pack[4] = s[4];
+                    return TRUE;
+                }
+            }
+        }
+    }
+    return FALSE;
+}
+
+int GetDVRecordingTime(BYTE *buf, int len)
+{
+    BYTE pack62[5];
+    BYTE pack63[5];
+    if (len != 144000 && len != 120000) return -1;
+    if (!GetSSYBPack(buf, len, 0x62, pack62))
+        return -1;
+    if (!GetSSYBPack(buf, len, 0x63, pack63))
+        return -1;
+    int day = pack62[2];
+    int month = pack62[3];
+    int year = pack62[4];
+    int sec = pack63[2];
+    int min = pack63[3];
+    int hour = pack63[4];
+    sec = (sec & 0xf) + 10 * ((sec >> 4) & 0x7);
+    min = (min & 0xf) + 10 * ((min >> 4) & 0x7);
+    hour = (hour & 0xf) + 10 * ((hour >> 4) & 0x3);
+    year = (year & 0xf) + 10 * ((year >> 4) & 0xf);
+    month = (month & 0xf) + 10 * ((month >> 4) & 0x1);
+    day = (day & 0xf) + 10 * ((day >> 4) & 0x3);
+    if (year < 50)
+        year += 2000;
+    else
+        year += 1900;
+    struct tm recDate;
+    recDate.tm_sec = sec;
+    recDate.tm_min = min;
+    recDate.tm_hour = hour;
+    recDate.tm_mday = day;
+    recDate.tm_mon = month - 1;
+    recDate.tm_year = year - 1900;
+    recDate.tm_wday = -1;
+    recDate.tm_yday = -1;
+    recDate.tm_isdst = -1;
+    return mktime(&recDate);
+}
+
+
+// mp4
+class CMP4Writer : public COutputGraph {
+public:
+    CMP4Writer(LPCSTR filename, CMediaType *type) {
+        // Crear multiplexor MP4
+        IBaseFilter* pMux;
+        IFileSinkFilter* pSink;
+        m_GB->SetOutputFileName(&MEDIASUBTYPE_MP4, filename, &pMux, &pSink);
+        
+        // Configurar codificador H.264
+        IBaseFilter* pEncoder;
+        CoCreateInstance(CLSID_CMSH264EncoderMFT, NULL, CLSCTX_INPROC, 
+                         IID_PPV_ARGS(&pEncoder));
+        m_FG->AddFilter(pEncoder, L"H.264 Encoder");
+        
+        // Conectar componentes
+        m_GB->RenderStream(NULL, NULL, m_outputFilter, NULL, pEncoder);
+        m_GB->RenderStream(NULL, NULL, pEncoder, NULL, pMux);
+    }
+};
