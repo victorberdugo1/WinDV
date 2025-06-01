@@ -26,14 +26,14 @@ class CAboutDlg : public CDialog
 public:
 	CAboutDlg();
 
-// Dialog Data
-	//{{AFX_DATA(CAboutDlg)
+	// Dialog Data
+		//{{AFX_DATA(CAboutDlg)
 	enum { IDD = IDD_ABOUTBOX };
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CAboutDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -71,35 +71,35 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-void UrlThread(void *ptr)
+void UrlThread(void* ptr)
 {
-	ShellExecute(NULL, "open", (char *)ptr, NULL, NULL, SW_SHOWNORMAL);
+	ShellExecute(NULL, "open", (char*)ptr, NULL, NULL, SW_SHOWNORMAL);
 }
 
-void CAboutDlg::OnEmail() 
+void CAboutDlg::OnEmail()
 {
 	_beginthread(UrlThread, 0, "mailto:petr@mourek.cz?subject=WinDV");
 }
 
-void CAboutDlg::OnUrl() 
+void CAboutDlg::OnUrl()
 {
 	_beginthread(UrlThread, 0, "http://windv.mourek.cz/");
 }
 
-HBRUSH CAboutDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH CAboutDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	switch (pWnd->GetDlgCtrlID()) {
 	case IDC_EMAIL:
 	case IDC_URL:
-		pDC->SetTextColor(RGB(0,0,192));
+		pDC->SetTextColor(RGB(0, 0, 192));
 	}
-	
+
 	return hbr;
 }
 
-BOOL CAboutDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+BOOL CAboutDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	switch (pWnd->GetDlgCtrlID()) {
 	case IDOK:
@@ -108,8 +108,8 @@ BOOL CAboutDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		SetCursor(LoadCursor(NULL, MAKEINTRESOURCE(32649)));
 		return TRUE;
 	}
-	
-	
+
+
 	return CDialog::OnSetCursor(pWnd, nHitTest, message);
 }
 
@@ -118,12 +118,12 @@ BOOL CAboutDlg::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
 #define IDC_TAB_CHANGE 0x100
 
-enum {TAB_ALL=-1, TAB_NONE=0, TAB_CAPTURE=1, TAB_RECORD=2};
+enum { TAB_ALL = -1, TAB_NONE = 0, TAB_CAPTURE = 1, TAB_RECORD = 2 };
 
 #define XL 25
 #define XR 75
 
-static struct CtrlProperties {int id; int dx, dw, dy, dh; int tabMask;} ctrlProperties[] = 
+static struct CtrlProperties { int id; int dx, dw, dy, dh; int tabMask; } ctrlProperties[] =
 {
 	{IDC_VIDEO,		  0,100,  0,100,	TAB_ALL},
 	{IDC_PICTURE,	 XR, XR,100,100,	TAB_ALL},
@@ -153,11 +153,11 @@ static struct CtrlProperties {int id; int dx, dw, dy, dh; int tabMask;} ctrlProp
 
 #define NControls (sizeof ctrlProperties/sizeof (struct CtrlProperties))
 
-bool CaptureFilenameExtractBase(CString &file)
+bool CaptureFilenameExtractBase(CString& file)
 {
 	int pos = file.Find(".");
-	if (pos>=0) file = file.Mid(0, pos);
-	return ! file.IsEmpty();
+	if (pos >= 0) file = file.Mid(0, pos);
+	return !file.IsEmpty();
 }
 
 
@@ -167,14 +167,14 @@ CDVToolsDlg::CDVToolsDlg(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CDVToolsDlg)
 	//}}AFX_DATA_INIT
 
-	m_hIcon      = (HICON)LoadImage(AfxGetResourceHandle(), 
-	                         MAKEINTRESOURCE(IDR_MAINFRAME), 
-							 IMAGE_ICON,
-							 0, 0, LR_DEFAULTSIZE);
-	m_hIconSmall = (HICON)LoadImage(AfxGetResourceHandle(), 
-	                         MAKEINTRESOURCE(IDR_MAINFRAME), 
-							 IMAGE_ICON,
-							 16, 16, 0);
+	m_hIcon = (HICON)LoadImage(AfxGetResourceHandle(),
+		MAKEINTRESOURCE(IDR_MAINFRAME),
+		IMAGE_ICON,
+		0, 0, LR_DEFAULTSIZE);
+	m_hIconSmall = (HICON)LoadImage(AfxGetResourceHandle(),
+		MAKEINTRESOURCE(IDR_MAINFRAME),
+		IMAGE_ICON,
+		16, 16, 0);
 
 	tabChangeBtns = NULL;
 	m_originalRects = NULL;
@@ -229,7 +229,7 @@ BEGIN_MESSAGE_MAP(CDVToolsDlg, CDialog)
 	ON_BN_CLICKED(IDC_PICTURE, OnPicture)
 	ON_BN_CLICKED(IDC_DVCTRL, OnDvctrl)
 	//}}AFX_MSG_MAP
-	ON_COMMAND_RANGE(IDC_TAB_CHANGE, IDC_TAB_CHANGE+99, OnCmdTabChange)
+	ON_COMMAND_RANGE(IDC_TAB_CHANGE, IDC_TAB_CHANGE + 99, OnCmdTabChange)
 	ON_MESSAGE(WM_DV_TIMECHANGE, OnDVTimeChange)
 END_MESSAGE_MAP()
 
@@ -262,7 +262,7 @@ BOOL CDVToolsDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIconSmall, FALSE);		// Set small icon
-	
+
 	GetClientRect(&m_originalRect);
 	GetWindowRect(&m_lastRect);
 
@@ -271,7 +271,7 @@ BOOL CDVToolsDlg::OnInitDialog()
 	m_originalRects = new RECT[NControls];
 	int pgNo = 0;
 	CString tmp;
-	RECT rc = {0,0,0,0};
+	RECT rc = { 0,0,0,0 };
 	tabChangeBtns = new CButton[2];
 
 	tmp.LoadString(IDS_TAB_VIDEO_CAPTURE);
@@ -280,10 +280,10 @@ BOOL CDVToolsDlg::OnInitDialog()
 	tmp.LoadString(IDS_TAB_VIDEO_RECORDING);
 	tabChangeBtns[pgNo].Create(tmp, WS_CHILD, rc, this, pgNo + IDC_TAB_CHANGE);
 	m_toolTab.InsertItem(pgNo++, tmp);
-	
+
 	{
 		int i;
-		for(i=0; i<NControls; i++)
+		for (i = 0; i < NControls; i++)
 		{
 			GetDlgItem(ctrlProperties[i].id)->GetWindowRect(&m_originalRects[i]);
 			ScreenToClient(&m_originalRects[i]);
@@ -305,9 +305,9 @@ BOOL CDVToolsDlg::OnInitDialog()
 	CString wdir = AfxGetApp()->GetProfileString("MainWindow", "WorkingDirectory", ".");
 	SetCurrentDirectory(wdir);
 
-	if (ww && wh) 
+	if (ww && wh)
 		SetWindowPos(NULL, wx, wy, ww, wh, SWP_NOZORDER);
-	else 
+	else
 		PostMessage(WM_SYSCOMMAND, IDM_ABOUTBOX, 0);
 
 
@@ -334,27 +334,29 @@ BOOL CDVToolsDlg::OnInitDialog()
 	m_DTFormatHistory = AfxGetApp()->GetProfileString("Capture", "DateTimeFormatHistory", "%y-%m-%d_%H-%M-%S\n%Y-%m-%d_%H-%M\n%Y-%m-%d_%H-%M-%S\n%Y%m%d-%H%M%S\n%a_%H-%M-%S");
 	m_nSuffixDigits = AfxGetApp()->GetProfileInt("Capture", "SuffixDigits", 2);
 
-	char *delim = " \t\n";
+	char* delim = " \t\n";
 	CString err;
-	LPSTR arg = strtok(AfxGetApp()->m_lpCmdLine, delim);
+	char* context = nullptr;
+	LPSTR arg = strtok_s(AfxGetApp()->m_lpCmdLine, delim, &context);
 	if (arg) {
-		if (strcmp(arg,"capture")==0) {
+		if (strcmp(arg, "capture") == 0) {
 			m_toolTab.SetCurSel(0);
 			LRESULT result;
 			OnSelchangeToolTab(NULL, &result);
-			arg = strtok(NULL, delim);
-			if (arg && strcmp(arg,"-exit")==0) {
+
+			arg = strtok_s(nullptr, delim, &context);
+			if (arg && strcmp(arg, "-exit") == 0) {
 				m_exitOnFinish = 1;
-				arg = strtok(NULL, delim);
+				arg = strtok_s(nullptr, delim, &context);
 			}
 			if (!arg) {
-				CString tmp; tmp.LoadString(IDS_USAGE);				
+				CString tmp; tmp.LoadString(IDS_USAGE);
 				err += tmp;
 			}
 			else {
-				int hh = 0, mi = 0, ss = 0, us = 0; 
-				for(;isdigit(*arg);arg++) {
-					hh = hh * 10 + (*arg - '0');	
+				int hh = 0, mi = 0, ss = 0, us = 0;
+				for (; isdigit(*arg); arg++) {
+					hh = hh * 10 + (*arg - '0');
 				}
 				if (*arg == 0 || *arg == '.') {
 					ss = hh; hh = 0;
@@ -362,8 +364,8 @@ BOOL CDVToolsDlg::OnInitDialog()
 				}
 				if (*arg == ':') arg++;
 				else goto timerr;
-				for(;isdigit(*arg);arg++) {
-					mi = mi * 10 + (*arg - '0');	
+				for (; isdigit(*arg); arg++) {
+					mi = mi * 10 + (*arg - '0');
 				}
 				if (*arg == 0 || *arg == '.') {
 					ss = mi; mi = hh; hh = 0;
@@ -371,46 +373,46 @@ BOOL CDVToolsDlg::OnInitDialog()
 				}
 				if (*arg == ':') arg++;
 				else goto timerr;
-				for(;isdigit(*arg);arg++) {
-					ss = ss * 10 + (*arg - '0');	
+				for (; isdigit(*arg); arg++) {
+					ss = ss * 10 + (*arg - '0');
 				}
-timusec:
+			timusec:
 				if (*arg) {
 					if (*arg == '.') arg++;
 					else goto timerr;
 
 					int i = 1000000;
-					for(;isdigit(*arg);arg++) {
-						us += i*(*arg - '0');	
+					for (; isdigit(*arg); arg++) {
+						us += i * (*arg - '0');
 						i /= 10;
 					}
 					if (*arg) goto timerr;
 				}
-				
-				arg = strtok(NULL, delim);
+
+				arg = strtok_s(nullptr, delim, &context);
 				if (!arg) {
-timerr:
-					CString tmp; tmp.LoadString(IDS_USAGE);				
+				timerr:
+					CString tmp; tmp.LoadString(IDS_USAGE);
 					err += tmp;
 				}
 				else {
-					REFERENCE_TIME t = (hh*60+mi)*60+ss;
+					REFERENCE_TIME t = (hh * 60 + mi) * 60 + ss;
 					t = t * 10000000 + us;
 
 					CString file = arg;
-					arg = strtok(NULL, delim);
+					arg = strtok_s(nullptr, delim, &context);
 					if (arg) {
-						CString tmp; tmp.LoadString(IDS_USAGE);				
+						CString tmp; tmp.LoadString(IDS_USAGE);
 						err += tmp;
 					}
 					else {
-						TRY {
+						TRY{
 							m_FDST.SetWindowText(file);
 							m_video.BuildCapturing(m_VSRCname);
 							m_video.StartCapturing(file, m_DTFormat, m_nSuffixDigits, t);
 							SetTimer(1, 200, NULL);
 						}
-						CATCH_ALL(e) {
+							CATCH_ALL(e) {
 							InitVideo();
 							Exception2Status(e);
 						}
@@ -419,17 +421,17 @@ timerr:
 				}
 			}
 		}
-		else if (strcmp(arg,"record")==0) {
+		else if (strcmp(arg, "record") == 0) {
 			m_toolTab.SetCurSel(1);
 			LRESULT result;
 			OnSelchangeToolTab(NULL, &result);
-			arg = strtok(NULL, delim);
-			if (arg && strcmp(arg,"-exit")==0) {
+			arg = strtok_s(nullptr, delim, &context);
+			if (arg && strcmp(arg, "-exit") == 0) {
 				m_exitOnFinish = 1;
-				arg = strtok(NULL, delim);
+				arg = strtok_s(nullptr, delim, &context);
 			}
 			if (!arg) {
-				CString tmp; tmp.LoadString(IDS_USAGE);				
+				CString tmp; tmp.LoadString(IDS_USAGE);
 				err += tmp;
 			}
 			else {
@@ -437,15 +439,15 @@ timerr:
 				while (arg) {
 					if (!files.IsEmpty()) files += " | ";
 					files += arg;
-					arg = strtok(NULL, delim);
+					arg = strtok_s(nullptr, delim, &context);
 				}
-				TRY {
+				TRY{
 					m_FSRC.SetWindowText(files);
-					m_video.BuildRecording(m_AVIPrefix + '|' + files + '|' + m_AVISuffix,  m_VDSTname);
+					m_video.BuildRecording(m_AVIPrefix + '|' + files + '|' + m_AVISuffix, m_VDSTname);
 					m_video.StartRecording();
 					SetTimer(1, 200, NULL);
 				}
-				CATCH_ALL(e) {
+					CATCH_ALL(e) {
 					InitVideo();
 					Exception2Status(e);
 				}
@@ -453,11 +455,11 @@ timerr:
 			}
 		}
 		else {
-			CString tmp; tmp.LoadString(IDS_USAGE);				
+			CString tmp; tmp.LoadString(IDS_USAGE);
 			err += tmp;
 		}
 		if (!err.IsEmpty()) {
-			MessageBox(err,NULL,MB_OK | MB_ICONEXCLAMATION);
+			MessageBox(err, NULL, MB_OK | MB_ICONEXCLAMATION);
 			m_video.Destroy();
 			CDialog::OnCancel();
 		}
@@ -467,7 +469,7 @@ timerr:
 		OnSelchangeToolTab(NULL, &result);
 	}
 
-	return TRUE;  
+	return TRUE;
 }
 
 void CDVToolsDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -487,13 +489,13 @@ void CDVToolsDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CDVToolsDlg::OnPaint() 
+void CDVToolsDlg::OnPaint()
 {
 	if (IsIconic())
 	{
 		CPaintDC dc(this); // device context for painting
 
-		SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
+		SendMessage(WM_ICONERASEBKGND, (WPARAM)dc.GetSafeHdc(), 0);
 
 		// Center icon in client rectangle
 		int cxIcon = GetSystemMetrics(SM_CXICON);
@@ -516,70 +518,70 @@ void CDVToolsDlg::OnPaint()
 //  the minimized window.
 HCURSOR CDVToolsDlg::OnQueryDragIcon()
 {
-	return (HCURSOR) m_hIcon;
+	return (HCURSOR)m_hIcon;
 }
 
-void CDVToolsDlg::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI) 
+void CDVToolsDlg::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
 {
 	// TODO: Add your message handler code here and/or call default
-	
+
 	CDialog::OnGetMinMaxInfo(lpMMI);
 	lpMMI->ptMinTrackSize.x = m_minWidth;
 	lpMMI->ptMinTrackSize.y = m_minHeight;
 }
 
-void CDVToolsDlg::OnSize(UINT nType, int cx, int cy) 
+void CDVToolsDlg::OnSize(UINT nType, int cx, int cy)
 {
 	if (nType == SIZE_RESTORED) GetWindowRect(&m_lastRect);
-	if (m_originalRect.right) 
+	if (m_originalRect.right)
 	{
 		int dx = cx - m_originalRect.right;
 		int dy = cy - m_originalRect.bottom;
 
 		int i;
 
-		for(i=0; i<NControls; i++)
+		for (i = 0; i < NControls; i++)
 		{
 			GetDlgItem(ctrlProperties[i].id)->MoveWindow(
-				(ctrlProperties[i].dx*dx)/100+m_originalRects[i].left,
-				(ctrlProperties[i].dy*dy)/100+m_originalRects[i].top,
-				((ctrlProperties[i].dw-ctrlProperties[i].dx)*dx)/100+m_originalRects[i].right-m_originalRects[i].left,
-				((ctrlProperties[i].dh-ctrlProperties[i].dy)*dy)/100+m_originalRects[i].bottom-m_originalRects[i].top,
+				(ctrlProperties[i].dx * dx) / 100 + m_originalRects[i].left,
+				(ctrlProperties[i].dy * dy) / 100 + m_originalRects[i].top,
+				((ctrlProperties[i].dw - ctrlProperties[i].dx) * dx) / 100 + m_originalRects[i].right - m_originalRects[i].left,
+				((ctrlProperties[i].dh - ctrlProperties[i].dy) * dy) / 100 + m_originalRects[i].bottom - m_originalRects[i].top,
 				false);
 		}
 
 		SetToolTabItemSize();
-		
+
 		InvalidateRect(NULL);
 		UpdateWindow();
 	}
 }
 
 
-void CDVToolsDlg::OnMove(int x, int y) 
+void CDVToolsDlg::OnMove(int x, int y)
 {
 	CDialog::OnMove(x, y);
-	
+
 	if (!IsIconic() && !IsZoomed())	GetWindowRect(&m_lastRect);
 }
 
-void CDVToolsDlg::OnSelchangeToolTab(NMHDR* pNMHDR, LRESULT* pResult) 
+void CDVToolsDlg::OnSelchangeToolTab(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	int sel = m_toolTab.GetCurSel();
 
 	int i;
 
-	for(i=0; i<NControls; i++)
+	for (i = 0; i < NControls; i++)
 	{
-		GetDlgItem(ctrlProperties[i].id)->ShowWindow(((1<<sel) & ctrlProperties[i].tabMask ) ? SW_SHOW : SW_HIDE);
+		GetDlgItem(ctrlProperties[i].id)->ShowWindow(((1 << sel) & ctrlProperties[i].tabMask) ? SW_SHOW : SW_HIDE);
 	}
 
 	UpdateWindow();
 
-	TRY {
+	TRY{
 		InitVideo();
 	}
-	CATCH_ALL(e) {
+		CATCH_ALL(e) {
 		TCHAR buf[1024];
 		e->GetErrorMessage(buf, sizeof buf);
 		MessageBox(buf, NULL, MB_OK | MB_ICONERROR);
@@ -597,7 +599,7 @@ void CDVToolsDlg::SetToolTabItemSize()
 	m_toolTab.GetItemRect(0, &rc);
 	sz.cy = rc.bottom - rc.top;
 	m_toolTab.GetWindowRect(&rc);
-	sz.cx = (rc.right - rc.left) * 2 / (m_toolTab.GetItemCount()*2 + 1);
+	sz.cx = (rc.right - rc.left) * 2 / (m_toolTab.GetItemCount() * 2 + 1);
 	m_toolTab.SetItemSize(sz);
 }
 
@@ -611,26 +613,26 @@ void CDVToolsDlg::OnCmdTabChange(UINT nID)
 	}
 }
 
-HBRUSH CDVToolsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH CDVToolsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	if (pWnd->GetDlgCtrlID() == IDC_VIDEO) {
 		hbr = (HBRUSH)GetStockObject(BLACK_BRUSH);
 	}
-	
+
 	return hbr;
 }
 
-void CDVToolsDlg::OnCancel() 
+void CDVToolsDlg::OnCancel()
 {
 	InitVideo();
 }
 
-void CDVToolsDlg::OnClose() 
+void CDVToolsDlg::OnClose()
 {
 	m_video.Destroy();
-	 
+
 	CString tmp;
 
 	AfxGetApp()->WriteProfileInt("MainWindow", "X", m_lastRect.left);
@@ -666,11 +668,11 @@ void CDVToolsDlg::OnClose()
 	CDialog::OnCancel();
 }
 
-void CDVToolsDlg::OnOK() 
+void CDVToolsDlg::OnOK()
 {
 }
 
-void CDVToolsDlg::Exception2Status(CException *e)
+void CDVToolsDlg::Exception2Status(CException* e)
 {
 	TCHAR buf[1024];
 	e->GetErrorMessage(buf, sizeof buf);
@@ -679,9 +681,9 @@ void CDVToolsDlg::Exception2Status(CException *e)
 	m_status.SetWindowText(tmp);
 }
 
-void CDVToolsDlg::OnVsrcSel() 
+void CDVToolsDlg::OnVsrcSel()
 {
-	CArray<CString,CString&> list;
+	CArray<CString, CString&> list;
 	GetVideoSrcList(list);
 
 	BOOL doInit;
@@ -695,9 +697,9 @@ void CDVToolsDlg::OnVsrcSel()
 	if (doInit) InitVideo();
 }
 
-void CDVToolsDlg::OnVdstSel() 
+void CDVToolsDlg::OnVdstSel()
 {
-	CArray<CString,CString&> list;
+	CArray<CString, CString&> list;
 	GetVideoDstList(list);
 
 	BOOL doInit;
@@ -722,14 +724,14 @@ void CDVToolsDlg::InitVideo()
 	m_status3.SetWindowText("");
 	m_counter.SetWindowText("");
 
-	switch(sel) {
+	switch (sel) {
 	case 0:
-		TRY {
+		TRY{
 			CString filename;
 			m_video.BuildCapturing(m_VSRCname);
 			SetTimer(1, 200, NULL);
 		}
-		CATCH_ALL(e) {
+			CATCH_ALL(e) {
 			Exception2Status(e);
 		}
 		END_CATCH_ALL;
@@ -742,13 +744,13 @@ void CDVToolsDlg::InitVideo()
 }
 
 
-void CDVToolsDlg::OnFsrcSel() 
+void CDVToolsDlg::OnFsrcSel()
 {
 	SelectFile(TRUE, &m_FSRC);
 }
 
 
-void CDVToolsDlg::OnFdstSel() 
+void CDVToolsDlg::OnFdstSel()
 {
 	SelectFile(FALSE, &m_FDST);
 	CString filename;
@@ -757,64 +759,64 @@ void CDVToolsDlg::OnFdstSel()
 	m_FDST.SetWindowText(filename);
 }
 
-void CDVToolsDlg::OnCapture() 
+void CDVToolsDlg::OnCapture()
 {
 	if (m_video.GetState() == CDV::CapturePaused) {
-		TRY {
+		TRY{
 			CString filename;
 			m_FDST.GetWindowText(filename);
 			m_video.StartCapturing(filename, m_DTFormat, m_nSuffixDigits);
 		}
-		CATCH_ALL(e) {
+			CATCH_ALL(e) {
 			InitVideo();
 			Exception2Status(e);
 		}
 		END_CATCH_ALL;
 	}
 	else if (m_video.GetState() == CDV::Capturing) {
-		TRY {
+		TRY{
 			m_video.StopCapturing();
 		}
-		CATCH_ALL(e) {
+			CATCH_ALL(e) {
 			InitVideo();
 			Exception2Status(e);
 		}
 		END_CATCH_ALL;
 	}
-	else 
+	else
 		InitVideo();
 }
 
-void CDVToolsDlg::OnRecord() 
+void CDVToolsDlg::OnRecord()
 {
 	if (m_video.GetState() == CDV::RecordPaused) {
-		TRY {
+		TRY{
 			m_video.StartRecording();
 		}
-		CATCH_ALL(e) {
+			CATCH_ALL(e) {
 			InitVideo();
 			Exception2Status(e);
 		}
 		END_CATCH_ALL;
 	}
 	else if (m_video.GetState() == CDV::Recording) {
-		TRY {
+		TRY{
 			m_video.StopRecording();
 		}
-		CATCH_ALL(e) {
+			CATCH_ALL(e) {
 			InitVideo();
 			Exception2Status(e);
 		}
 		END_CATCH_ALL;
 	}
 	else {
-		TRY {
+		TRY{
 			CString filename;
 			m_FSRC.GetWindowText(filename);
-			m_video.BuildRecording(m_AVIPrefix + '|' +filename + '|' + m_AVISuffix,  m_VDSTname);
+			m_video.BuildRecording(m_AVIPrefix + '|' + filename + '|' + m_AVISuffix,  m_VDSTname);
 			SetTimer(1, 200, NULL);
 		}
-		CATCH_ALL(e) {
+			CATCH_ALL(e) {
 			InitVideo();
 			Exception2Status(e);
 		}
@@ -822,7 +824,7 @@ void CDVToolsDlg::OnRecord()
 	}
 }
 
-void CDVToolsDlg::OnConfig() 
+void CDVToolsDlg::OnConfig()
 {
 	int sel = m_toolTab.GetCurSel();
 
@@ -850,7 +852,7 @@ void CDVToolsDlg::OnConfig()
 	cfgDlg.SetActivePage(m_toolTab.GetCurSel());
 
 	if (cfgDlg.DoModal() == IDOK) {
-		m_video.m_type2AVI  = captureCfg.m_type12 == 1;
+		m_video.m_type2AVI = captureCfg.m_type12 == 1;
 		m_video.m_discontinuityTreshold = captureCfg.m_discontinuityTreshold;
 		m_video.m_maxAVIFrames = captureCfg.m_maxAVIFrames;
 		m_video.m_everyNth = captureCfg.m_everyNth;
@@ -861,12 +863,12 @@ void CDVToolsDlg::OnConfig()
 		m_AVIPrefix = recordCfg.m_aviPrefix;
 		m_AVISuffix = recordCfg.m_aviSuffix;
 		m_video.m_recordPreview = recordCfg.m_recordPreview > 0;
-//		InitVideo();
+		//		InitVideo();
 	}
 }
 
 
-void CDVToolsDlg::OnTimer(UINT nIDEvent) 
+void CDVToolsDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	SetThreadExecutionState(ES_DISPLAY_REQUIRED);
 
@@ -894,7 +896,7 @@ void CDVToolsDlg::OnTimer(UINT nIDEvent)
 		break;
 	}
 
-	
+
 	switch (m_video.GetState()) {
 	case CDV::Capturing:
 	case CDV::CapturePaused:
@@ -933,18 +935,22 @@ LRESULT CDVToolsDlg::OnDVTimeChange(WPARAM, LPARAM lParam)
 {
 	char buf[100] = "";
 	if (lParam > 0) {
-		strftime(buf, sizeof buf, "%d.%m.'%y %H:%M:%S", localtime(&lParam));
+		struct tm timeinfo;
+		time_t rawtime = (time_t)lParam;
+		localtime_s(&timeinfo, &rawtime);
+		strftime(buf, sizeof(buf), "%d.%m.'%y %H:%M:%S", &timeinfo);
 	}
 	m_status2.SetWindowText(buf);
 	return 0;
 }
 
-void CDVToolsDlg::OnPicture() 
+
+void CDVToolsDlg::OnPicture()
 {
 	OnSysCommand(IDM_ABOUTBOX, 0);
 }
 
-void CDVToolsDlg::OnDvctrl() 
+void CDVToolsDlg::OnDvctrl()
 {
 	m_video.m_DVctrl = m_DVCtrl.GetCheck() > 0;
 }

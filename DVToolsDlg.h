@@ -13,13 +13,13 @@
 
 class CDVToolsDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CDVToolsDlg(CWnd* pParent = NULL);	// standard constructor
 	virtual  ~CDVToolsDlg();
 
-// Dialog Data
-	//{{AFX_DATA(CDVToolsDlg)
+	// Dialog Data
+		//{{AFX_DATA(CDVToolsDlg)
 	enum { IDD = IDD_DVTOOLS_DIALOG };
 	CToolTab	m_toolTab;
 	CButton	m_DVCtrl;
@@ -36,23 +36,23 @@ public:
 
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CDVToolsDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
-	void Exception2Status(CException *e);
+	void Exception2Status(CException* e);
 	void InitVideo();
 	void SetToolTabItemSize();
 
 	HICON m_hIcon, m_hIconSmall;
 
-	RECT *m_originalRects;
+	RECT* m_originalRects;
 	RECT m_originalRect;
 	RECT m_lastRect;
 	int m_minWidth, m_minHeight;
-	CButton *tabChangeBtns;
+	CButton* tabChangeBtns;
 
 	CString m_VSRCname;
 	CString m_VDSTname;
@@ -62,7 +62,7 @@ protected:
 	CString m_DTFormat; CString m_DTFormatHistory;
 	int m_nSuffixDigits;
 
-	enum {Iddle, CapturePaused, Capturing, RecordPaused, Recording};
+	enum { Iddle, CapturePaused, Capturing, RecordPaused, Recording };
 
 	bool m_exitOnFinish;
 
@@ -89,7 +89,7 @@ protected:
 	afx_msg void OnConfig();
 	afx_msg void OnCapture();
 	afx_msg void OnRecord();
-	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnPicture();
 	afx_msg void OnDvctrl();
 	//}}AFX_MSG

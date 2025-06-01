@@ -12,46 +12,51 @@
 
 class CCaptureCfg : public CPropertyPage
 {
-// Construction
+    // Construction
 public:
-	CCaptureCfg();   // standard constructor
+    CCaptureCfg();               // standard constructor
+    virtual ~CCaptureCfg();      // destructor
 
-// Dialog Data
-	//{{AFX_DATA(CCaptureCfg)
-	enum { IDD = IDD_CAPTURE_CONFIG };
-	CStatic	m_fexample;
-	CComboBox	m_dtformatctl;
-	CComboBox	m_ndigitsctl;
-	UINT	m_discontinuityTreshold;
-	UINT	m_everyNth;
-	UINT	m_maxAVIFrames;
-	int		m_type12;
-	CString	m_dtformat;
-	int		m_ndigits;
-	//}}AFX_DATA
+    // Dialog Data
+        //{{AFX_DATA(CCaptureCfg)
+    enum { IDD = IDD_CAPTURE_CONFIG };
+    CStatic  m_fexample;
+    CComboBox    m_dtformatctl;
+    CComboBox    m_ndigitsctl;
+    UINT    m_discontinuityTreshold;
+    UINT    m_everyNth;
+    UINT    m_maxAVIFrames;
+    int     m_type12;
+    CString m_dtformat;
+    int     m_ndigits;
+    //}}AFX_DATA
 
-	CString m_dtformathistory;
+    CString m_dtformathistory;
 
+    // Runtime class support for MFC
+    DECLARE_DYNAMIC(CCaptureCfg)
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CCaptureCfg)
-	public:
-	virtual void OnOK();
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    // Overrides
+        // ClassWizard generated virtual function overrides
+        //{{AFX_VIRTUAL(CCaptureCfg)
+public:
+    virtual void OnOK();
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(CCaptureCfg)
-	afx_msg void OnTimer(UINT nIDEvent);
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CCaptureCfg)
+    afx_msg void OnTimer(UINT_PTR nIDEvent);
+    virtual BOOL OnInitDialog();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
+
+/////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

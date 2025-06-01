@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#pragma comment(lib, "winmm.lib")
 #include "WinDV.h"
 #include "DropFilesEdit.h"
 #include "DShow.h"
